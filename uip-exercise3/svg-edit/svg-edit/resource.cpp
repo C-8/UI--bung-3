@@ -76,12 +76,10 @@ ResourceOperationResult Resource::save(const QString & file)
     if(!svgFile->isOpen()) {
         return ResourceOperationResult::FileSaveFailed;
     }
-
     svgFile->write(m_xmlSource->data().toUtf8());
     svgFile->close();
 
     m_fileInfo.setFile(file);
-
     return ResourceOperationResult::Success;
 }
 

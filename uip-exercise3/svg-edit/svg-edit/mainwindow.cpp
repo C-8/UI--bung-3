@@ -82,8 +82,8 @@ void MainWindow::setController(const Controller * controller)
 
     if(m_controller != nullptr) {
         connect(m_ui->actionNewFile, &QAction::triggered, m_controller, &Controller::newResource);
-        //connect(m_ui->actionSaveFile, &QAction::triggered, m_controller, &Controller::saveResource);
-        //connect(m_ui->actionCloseFile, &QAction::triggered, m_controller, &Controller::closeResource);
+        connect(m_ui->actionSaveFile, &QAction::triggered, m_controller, &Controller::saveResource);
+        connect(m_ui->actionCloseFile, &QAction::triggered, m_controller, &Controller::closeResource);
 
         connect(m_ui->actionExit, &QAction::triggered, m_controller, &Controller::exit);
         m_controller->newResource();
@@ -119,11 +119,13 @@ void MainWindow::onNewResource(const QString &file){
     sourceView->setObjectName(QString("sourceView"));
     sourceView->setResource(m_model->resource(id));
     connect(sourceView, SIGNAL(sourceChanged()), this, SLOT(on_sourceView_sourceChanged()));
+    connect(sourceView, SIGNAL(updatedStatusData(QString)), this, SLOT(status_Data_Changed(QString)));
+
 
     GraphicsView* graphicsView = new GraphicsView(splitter);
     graphicsView->setObjectName(QString("graphicsView"));
     graphicsView->setResource(m_model->resource(id));
-
+    connect(graphicsView, SIGNAL(updatedStatusData(QString)), this, SLOT(status_Data_Changed(QString)));
 
     m_ui->tabWidget->setCurrentIndex(m_ui->tabWidget->addTab(splitter,file));
     updateCurrentTabTitle(true);
@@ -144,10 +146,14 @@ void MainWindow::onResourceOpenend(const QString & file)
     sourceView->setObjectName(QString("sourceView"));
     sourceView->setResource(m_model->resource(id));
     connect(sourceView, SIGNAL(sourceChanged()), this, SLOT(on_sourceView_sourceChanged()));
+    connect(sourceView, SIGNAL(updatedStatusData(QString)), this, SLOT(status_Data_Changed(QString)));
+
 
     GraphicsView* graphicsView = new GraphicsView(splitter);
     graphicsView->setObjectName(QString("graphicsView"));
     graphicsView->setResource(m_model->resource(id));
+    connect(graphicsView, SIGNAL(updatedStatusData(QString)), this, SLOT(status_Data_Changed(QString)));
+
 
     replaceTab(m_ui->tabWidget, id, splitter, file);
     m_ui->tabWidget->setCurrentIndex(id);
@@ -192,7 +198,7 @@ void MainWindow::onResourceOperationFailed(const ResourceOperationResult result)
 
     if (result == ResourceOperationResult::FileSaveFailed)
     {
-        on_actionSaveFileAs_triggered();
+        //on_actionSaveFileAs_triggered();
     } else {
         auto errorDialog = new QErrorMessage(this);
         errorDialog->showMessage(QString("A Problem occurred: %1").arg(Resource::operationResultString(result)));
@@ -234,6 +240,7 @@ void MainWindow::on_actionCloseFile_triggered() {
 
 void MainWindow::on_actionSaveFile_triggered() {
     std::cerr << "save file triggered" << "\n";
+
     auto id = m_ui->tabWidget->currentIndex();
     m_controller->saveResource(id);
 }
@@ -285,7 +292,14 @@ void MainWindow::on_sourceView_wordWrapChanged(bool enabled) const
     m_ui->actionWordWrap->blockSignals(true);
     m_ui->actionWordWrap->setChecked(enabled);
     m_ui->actionWordWrap->blockSignals(false);
+
 }
+
+void MainWindow::status_Data_Changed(QString statusData) const
+{
+    m_ui->statusBar->showMessage(statusData);
+}
+
 
 void MainWindow::on_sourceView_sourceChanged() const
 {
@@ -321,7 +335,7 @@ void MainWindow::updateCurrentTabTitle(bool saved) const
         m_ui->tabWidget->setTabText(tabIndex, "* " + fileName);
     }
     updateCurrentMainTitle(saved);
-    updateMenuIconTitles();
+    updateMenuIcons(saved);
 
 
 }
@@ -350,7 +364,7 @@ void MainWindow::updateCurrentMainTitle(bool saved) const{
     }*/
     if(shownTitle == ""){
         m_ui->mainWindow->setWindowTitle ( "SVG-Editor" );
-        exit;
+        exit(0);
     }
     if (saved){
         m_ui->mainWindow->setWindowTitle(shownTitle);
@@ -362,11 +376,21 @@ void MainWindow::updateCurrentMainTitle(bool saved) const{
 
 }
 
-void MainWindow::updateMenuIconTitles( ) const{
+void MainWindow::updateMenuIcons( bool saved) const{
 
     auto tabIndex = m_ui->tabWidget->currentIndex();
     auto fileInfo = m_model->resource(tabIndex)->getFileInfo();
     auto fileName = fileInfo.fileName();
+    if(saved){
+        m_ui->actionSaveAll->setEnabled(false);
+        m_ui->actionSaveFile->setEnabled(false);
+        m_ui->actionSaveFileAs->setEnabled(false);
+    }
+    else{
+        m_ui->actionSaveAll->setEnabled(true);
+        m_ui->actionSaveFile->setEnabled(true);
+        m_ui->actionSaveFileAs->setEnabled(true);
+    }
     m_ui->actionSaveFile->setText( "Save "+ fileName);
     m_ui->actionSaveFileAs->setText( "Save "+ fileName+ " As");
 }

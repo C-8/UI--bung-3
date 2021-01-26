@@ -32,6 +32,7 @@ protected:
 
 signals:
     void fitViewChanged(bool enabled) const;
+    void updatedStatusData(QString statusWithData) const;
 
 public slots:
     void setResource(const Resource * resource, bool reset = false);

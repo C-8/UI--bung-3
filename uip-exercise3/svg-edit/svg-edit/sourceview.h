@@ -22,6 +22,8 @@ signals:
     void highlightChanged(bool enabled) const;
     void wordWrapChanged(bool enabled) const;
     void sourceChanged() const;
+    void updatedStatusData(QString statusWithData) const;
+
 
 public slots:
     void setResource(const Resource * resource);

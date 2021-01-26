@@ -37,7 +37,7 @@ protected:
 
     void updateCurrentTabTitle(bool saved) const;
     void updateCurrentMainTitle(bool saved) const;
-    void updateMenuIconTitles( ) const;
+    void updateMenuIcons(bool saved ) const;
     virtual void closeEvent(QCloseEvent * event);
 
 private slots:
@@ -67,6 +67,7 @@ private slots:
     void on_sourceView_highlightChanged(bool enabled) const;
     void on_sourceView_wordWrapChanged(bool enabled) const;
     void on_sourceView_sourceChanged() const;
+    void status_Data_Changed(QString statusData) const;
 
     void on_actionZoomIn_triggered();
     void on_actionZoomOut_triggered();

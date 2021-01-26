@@ -20,6 +20,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 
@@ -60,6 +61,8 @@ public:
     QToolBar *toolBar;
     QToolBar *toolBar_2;
     QMainWindow *mainWindow;
+    QLabel *m_sourceLabel;
+    QLabel *m_graphicsLabel;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -262,6 +265,9 @@ public:
         toolBar->addAction(actionZoomIn);
         toolBar->addAction(actionZoomOut);
         toolBar->addAction(actionFitView);
+
+        MainWindow->statusBar()->setDisabled(true);
+        MainWindow->statusBar()->showMessage("Willkommen!");
 
         retranslateUi(MainWindow);
 
