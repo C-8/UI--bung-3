@@ -31,6 +31,7 @@ public:
     QAction *actionExit;
     QAction *actionNewFile;
     QAction *actionOpenFile;
+    QMenu *recentFilesMenu;
     QAction *actionCloseFile;
     QAction *actionSaveFile;
     QAction *actionSaveFileAs;
@@ -83,6 +84,13 @@ public:
         actionNewFile->setIcon(icon);
         actionOpenFile = new QAction(MainWindow);
         actionOpenFile->setObjectName(QString::fromUtf8("actionOpenFile"));
+
+       /* QIcon icon18;
+        icon18.addFile(QString::fromUtf8(":/material/material/baseline-add-24px.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        recentFiles->setIcon(icon18);
+        recentFiles = new QAction(MainWindow);
+        recentFiles->setObjectName(QString::fromUtf8("actionRecentFiles"));*/
+
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/material/material/baseline-open_alt-24px.svg"), QSize(), QIcon::Normal, QIcon::Off);
         actionOpenFile->setIcon(icon1);
@@ -226,6 +234,7 @@ public:
         menuBar->addAction(menuView->menuAction());
         menu_File->addAction(actionNewFile);
         menu_File->addAction(actionOpenFile);
+        // menu_File->addAction(recentFiles);
         menu_File->addSeparator();
         menu_File->addAction(actionCloseFile);
         menu_File->addSeparator();
@@ -290,6 +299,7 @@ public:
 #endif // QT_CONFIG(shortcut)
         actionNewFile->setText(QCoreApplication::translate("MainWindow", "&New File", nullptr));
         actionOpenFile->setText(QCoreApplication::translate("MainWindow", "&Open File", nullptr));
+        //recentFiles->setText(QCoreApplication::translate("MainWindow", "&Recent Files", nullptr));
         actionCloseFile->setText(QCoreApplication::translate("MainWindow", "&Close File", nullptr));
         actionSaveFile->setText(QCoreApplication::translate("MainWindow", "&Save File", nullptr));
         actionSaveFileAs->setText(QCoreApplication::translate("MainWindow", "Save File &As", nullptr));

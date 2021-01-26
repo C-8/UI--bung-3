@@ -8,6 +8,7 @@ class Model;
 
 class GraphicsView;
 class SourceView;
+class TabState;
 
 enum class ResourceOperationResult;
 
@@ -16,6 +17,14 @@ namespace Ui {
     class MainWindow;
 }
 
+/*class ViewSpeicher{
+public:
+    bool highlightingIsActive;
+    bool textWrapIsActive;
+    SourceView sourceView;
+    ViewSpeicher(QWidget sourceView);
+
+};*/
 
 class MainWindow : public QMainWindow
 {
@@ -31,6 +40,8 @@ public:
     void setController(const Controller * controller);
     const Controller * controller() const;
 
+    std::vector<TabState*> tabstates;
+
 protected:
     void initializeGraphicsView();
     void initializeSourceView();
@@ -40,7 +51,9 @@ protected:
     void updateMenuIcons(bool saved ) const;
     virtual void closeEvent(QCloseEvent * event);
 
+
 private slots:
+    void openRecent();
     void onTabSelected(int index);
     void onFileSelected(const QString & file);
     void replaceTab(QTabWidget * tabs, int index,

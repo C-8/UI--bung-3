@@ -1,6 +1,6 @@
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "tabstate.h"
 
 #include <QActionGroup>
 #include <QSplitter>
@@ -13,10 +13,11 @@
 
 #include "graphicsview.h"
 #include "sourceview.h"
-#include "tab.h"
+#include "tabstate.h"
 
 #include <QDebug>
 #include <iostream>
+
 
 MainWindow::MainWindow(QWidget * parent) :
     QMainWindow(parent),
@@ -126,6 +127,7 @@ void MainWindow::onNewResource(const QString &file){
     graphicsView->setObjectName(QString("graphicsView"));
     graphicsView->setResource(m_model->resource(id));
     connect(graphicsView, SIGNAL(updatedStatusData(QString)), this, SLOT(status_Data_Changed(QString)));
+    tabstates.push_back(new TabState(file));
 
     m_ui->tabWidget->setCurrentIndex(m_ui->tabWidget->addTab(splitter,file));
     updateCurrentTabTitle(true);
@@ -153,6 +155,7 @@ void MainWindow::onResourceOpenend(const QString & file)
     graphicsView->setObjectName(QString("graphicsView"));
     graphicsView->setResource(m_model->resource(id));
     connect(graphicsView, SIGNAL(updatedStatusData(QString)), this, SLOT(status_Data_Changed(QString)));
+    tabstates[id]->file = file;
 
 
     replaceTab(m_ui->tabWidget, id, splitter, file);
@@ -218,6 +221,7 @@ void MainWindow::on_actionSwapViews_triggered()
     splitter->insertWidget(1, widget0);
 
     splitter->setSizes(sizes);
+
 }
 
 void MainWindow::on_actionOpenFile_triggered()
@@ -285,6 +289,7 @@ void MainWindow::on_sourceView_highlightChanged(bool enabled) const
     m_ui->actionSyntaxHighlighting->blockSignals(true);
     m_ui->actionSyntaxHighlighting->setChecked(enabled);
     m_ui->actionSyntaxHighlighting->blockSignals(false);
+    tabstates[m_ui->tabWidget->currentIndex()]->highlight_checked = !tabstates[m_ui->tabWidget->currentIndex()]->highlight_checked;
 }
 
 void MainWindow::on_sourceView_wordWrapChanged(bool enabled) const
@@ -292,14 +297,10 @@ void MainWindow::on_sourceView_wordWrapChanged(bool enabled) const
     m_ui->actionWordWrap->blockSignals(true);
     m_ui->actionWordWrap->setChecked(enabled);
     m_ui->actionWordWrap->blockSignals(false);
+    tabstates[m_ui->tabWidget->currentIndex()]->wordwrap_checked = !tabstates[m_ui->tabWidget->currentIndex()]->wordwrap_checked;
+
 
 }
-
-void MainWindow::status_Data_Changed(QString statusData) const
-{
-    m_ui->statusBar->showMessage(statusData);
-}
-
 
 void MainWindow::on_sourceView_sourceChanged() const
 {
@@ -311,6 +312,12 @@ void MainWindow::on_sourceView_sourceChanged() const
 
     updateCurrentTabTitle(false);
 }
+
+void MainWindow::status_Data_Changed(QString statusData) const
+{
+    m_ui->statusBar->showMessage(statusData);
+}
+
 
 void MainWindow::on_actionZoomIn_triggered()
 {
