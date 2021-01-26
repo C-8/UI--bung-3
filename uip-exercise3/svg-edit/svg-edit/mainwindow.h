@@ -37,6 +37,7 @@ protected:
 
     void updateCurrentTabTitle(bool saved) const;
     void updateCurrentMainTitle(bool saved) const;
+    void updateMenuIconTitles( ) const;
     virtual void closeEvent(QCloseEvent * event);
 
 private slots:
@@ -56,6 +57,7 @@ private slots:
     void on_actionCloseFile_triggered();
     void on_actionSaveFile_triggered();
     void on_actionSaveFileAs_triggered();
+    void on_actionSaveAll_triggered();
 
     void on_actionSwapViews_triggered();
 

@@ -19,6 +19,7 @@ public:
     void modifyResource(int i, const QString & source);
     void saveResource(int i);
     void saveResourceAs(int i, const QString & file);
+    void saveAllResources();
     void closeResource(int i);
     void closeAllResources();
 

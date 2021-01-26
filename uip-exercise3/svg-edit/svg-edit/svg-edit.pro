@@ -36,6 +36,7 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
+        ui_mainwindow.h\
         model.h \
         graphicsview.h \
         controller.h \

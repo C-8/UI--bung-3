@@ -22,6 +22,7 @@ public slots:
     void openResource(const QString & file, int id) const;
     void saveResource(int i) const;
     void saveResourceAs(int i, QString & file) const;
+    void saveAllResource()const;
     void closeResource(int i) const;
 
     void modifyResource(int i, const QString & source) const;

@@ -68,6 +68,16 @@ void Model::saveResourceAs(int i, const QString & file)
     emit operationFailed(opResult);
 }
 
+void Model::saveAllResources()
+{
+    for (int i=0; i < m_resources.size(); i++) {
+        if(m_resources.at(i) != nullptr) {
+            saveResource(i);
+        }
+    }
+}
+
+
 void Model::closeResource(int i)
 {
     if (i >= m_resources.size()) {

@@ -1,0 +1,16 @@
+release/main.o
+release/mainwindow.o
+release/model.o
+release/graphicsview.o
+release/controller.o
+release/resource.o
+release/sourceview.o
+release/highlighter.o
+release/qrc_material-icons.o
+release/moc_mainwindow.o
+release/moc_model.o
+release/moc_graphicsview.o
+release/moc_controller.o
+release/moc_resource.o
+release/moc_sourceview.o
+release/moc_highlighter.o

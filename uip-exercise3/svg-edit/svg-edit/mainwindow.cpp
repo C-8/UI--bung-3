@@ -247,6 +247,10 @@ void MainWindow::on_actionSaveFileAs_triggered() {
     m_controller->saveResourceAs(id, fileName);
 }
 
+void MainWindow::on_actionSaveAll_triggered() {
+    std::cerr << "save all triggered" << "\n";
+    m_controller->saveAllResource();
+}
 
 void MainWindow::onFileSelected(const QString & file) {
     auto tabCount = m_ui->tabWidget->count();
@@ -317,6 +321,9 @@ void MainWindow::updateCurrentTabTitle(bool saved) const
         m_ui->tabWidget->setTabText(tabIndex, "* " + fileName);
     }
     updateCurrentMainTitle(saved);
+    updateMenuIconTitles();
+
+
 }
 
 void MainWindow::updateCurrentMainTitle(bool saved) const{
@@ -351,4 +358,16 @@ void MainWindow::updateCurrentMainTitle(bool saved) const{
     } else {
         m_ui->mainWindow->setWindowTitle("* " + shownTitle);
     }
+
+
 }
+
+void MainWindow::updateMenuIconTitles( ) const{
+
+    auto tabIndex = m_ui->tabWidget->currentIndex();
+    auto fileInfo = m_model->resource(tabIndex)->getFileInfo();
+    auto fileName = fileInfo.fileName();
+    m_ui->actionSaveFile->setText( "Save "+ fileName);
+    m_ui->actionSaveFileAs->setText( "Save "+ fileName+ " As");
+}
+

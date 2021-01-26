@@ -43,6 +43,10 @@ void Controller::saveResourceAs(int i, QString & file) const
     m_model->saveResourceAs(i, file);
 }
 
+void Controller::saveAllResource()const
+{
+    m_model->saveAllResources();
+}
 
 void Controller::closeResource(int i) const
 {
