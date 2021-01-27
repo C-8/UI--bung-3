@@ -6,6 +6,7 @@ release/controller.o
 release/resource.o
 release/sourceview.o
 release/highlighter.o
+release/tabstate.o
 release/qrc_material-icons.o
 release/moc_mainwindow.o
 release/moc_model.o
