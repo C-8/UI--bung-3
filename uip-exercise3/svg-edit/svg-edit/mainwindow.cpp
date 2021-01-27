@@ -6,6 +6,7 @@
 #include <QSplitter>
 #include <QFileDialog>
 #include <QErrorMessage>
+#include<QSettings>
 
 #include "model.h"
 #include "resource.h"
@@ -24,6 +25,11 @@ MainWindow::MainWindow(QWidget * parent) :
     m_ui(new Ui::MainWindow)
 {
     m_ui->setupUi(this);
+
+    QSettings settings("MyCompany", "MyApp");
+    restoreGeometry(settings.value("m_ui/geometry").toByteArray());
+    restoreState(settings.value("m_ui/windowState").toByteArray());
+
     connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &MainWindow::onTabSelected);
     //m_ui->graphicsView->setFitView(true);
     //m_ui->sourceView->setHighlighting(true);
@@ -99,6 +105,9 @@ const Controller * MainWindow::controller() const
 
 void MainWindow::closeEvent(QCloseEvent * event)
 {
+    QSettings settings("MyCompany", "MyApp");
+    settings.setValue("m_ui/geometry", saveGeometry());
+    settings.setValue("m_ui/windowState", saveState());
     m_ui->actionExit->trigger();
     Q_UNUSED(event);
 }
@@ -402,3 +411,6 @@ void MainWindow::updateMenuIcons( bool saved) const{
     m_ui->actionSaveFileAs->setText( "Save "+ fileName+ " As");
 }
 
+void MainWindow::openRecent(){
+
+}
