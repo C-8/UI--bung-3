@@ -282,7 +282,6 @@ public:
 
         tabWidget->setCurrentIndex(0);
 
-
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 

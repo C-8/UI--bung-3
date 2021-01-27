@@ -220,7 +220,11 @@ void MainWindow::onResourceOperationFailed(const ResourceOperationResult result)
 
 void MainWindow::on_actionSwapViews_triggered()
 {
+    qDebug()<<"swap";
     auto splitter = m_ui->tabWidget->currentWidget()->findChild<QSplitter *>(QString("splitter"));
+    qDebug()<<"splitter: "<<splitter;
+    qDebug()<<"widget 0: "<<splitter->widget(0);
+     qDebug()<<"widget 1: "<<splitter->widget(1);
     const auto widget0 = splitter->widget(0);
     const auto widget1 = splitter->widget(1);
 
@@ -236,14 +240,14 @@ void MainWindow::on_actionSwapViews_triggered()
 void MainWindow::on_actionOpenFile_triggered()
 {
     auto dialog = new QFileDialog(this);
-    dialog->setFileMode(QFileDialog::ExistingFile);
+    dialog->setFileMode(QFileDialog::ExistingFiles);
     dialog->setViewMode(QFileDialog::Detail);
     dialog->setAcceptMode(QFileDialog::AcceptOpen);
 
     dialog->setMimeTypeFilters({ "image/svg+xml" });
     dialog->setNameFilter("Scalable Vector Graphic Files (*.svg);; All Files (*.*)");
 
-    dialog->open(this, SLOT(onFileSelected(const QString &)));
+    dialog->open(this, SLOT(onFilesSelected(const QStringList & selected)));
 }
 
 void MainWindow::on_actionCloseFile_triggered() {
@@ -277,8 +281,14 @@ void MainWindow::onFileSelected(const QString & file) {
     auto id = m_ui->tabWidget->currentIndex();
     std::cout<<tabCount;
     m_controller-> openResource(file, id);
-
 }
+
+void MainWindow::onFilesSelected(const QStringList & selected){
+    for (QString file : selected) {
+        onFileSelected(file);
+    }
+}
+
 
 void MainWindow::on_actionFitView_toggled(bool enabled) const
 {

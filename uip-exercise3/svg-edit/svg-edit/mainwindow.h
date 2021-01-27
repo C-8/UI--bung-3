@@ -56,6 +56,7 @@ private slots:
     void openRecent();
     void onTabSelected(int index);
     void onFileSelected(const QString & file);
+    void onFilesSelected(const QStringList & selected);
     void replaceTab(QTabWidget * tabs, int index,
                     QWidget * replacement, const QString & label);
     void onNewResource(const QString &file);
